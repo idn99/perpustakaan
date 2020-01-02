@@ -12,6 +12,7 @@ public class App{
         // database buku
 
         HashMap<String, Buku> lemariBuku = new HashMap<String, Buku>();
+        HashMap<String, Peminjaman> daftarTransaksi = new HashMap<String, Peminjaman>();
 
         lemariBuku.put("idn-001",new Buku("Kaguya-sama wa Kokurasetai","idn-001","Aka Akasaka","Viz Media","16 Volume",17));
         lemariBuku.put("idn-002",new Buku("Shingeki no Kyojin","idn-002","Hajime Isayama","Kondansha","30 Volume",27));
@@ -23,10 +24,12 @@ public class App{
             String judul = lemariBuku.get(key).getJudulBuku();
             String penulis = lemariBuku.get(key).getPenulis();
             String jumlah = lemariBuku.get(key).getJumlahHalaman();
+            int stok = lemariBuku.get(key).getStok();
             System.out.println("Nomor       :   "+no++);
             System.out.println("Judul Buku  :   "+judul);
             System.out.println("Penulis     :   "+penulis);
             System.out.println("Volume      :   "+jumlah);
+            System.out.println("Stok        :   "+stok);
             System.out.println();
 
         }
@@ -54,22 +57,61 @@ public class App{
         }
 
         Scanner input = new Scanner(System.in);
-        System.out.println("Masukan ISBN buku yang akan dipinjam : ");
-        String isbn = input.nextLine();
 
         Member member = daftarMember.get("id-001");
         Peminjaman transaction = new Peminjaman(member);
         transaction.setKodeTransaksi();
         System.out.println(transaction.getKodeTransaksi());
 
-        if(lemariBuku.containsKey(isbn)){
-            System.out.println("Buku Ada");
-            Buku borrowBooks = lemariBuku.get(isbn);
-            borrowBooks.dipinjam();
-        }else{
-            System.out.println("Buku tidak ada");
+        boolean runPinjam = true;
+
+        while(runPinjam){
+
+            System.out.println("Masukan ISBN buku yang akan dipinjam : ");
+            String isbn = input.nextLine();
+            if(lemariBuku.containsKey(isbn)){
+                // System.out.println("Buku Ada");
+                Buku borrowBooks = lemariBuku.get(isbn);
+                borrowBooks.dipinjam();
+                transaction.tambahBukuKeTransaksi(isbn, borrowBooks);
+    
+            }else{
+                System.out.println("Buku tidak ada");
+            }
+            System.out.println("apakah masih ada buku yang ingin dipinjam ? [y/n] ");
+            String answer = input.nextLine();
+            if(answer.equalsIgnoreCase("n")){
+                runPinjam = false;
+            }
+
         }
+        System.out.println();
+        System.out.println("Buku yang dipinjam : ");
+        int nom=1;
+        if(transaction.getBooks().size() > 0){
+            for (String i : transaction.getBooks().keySet()) {
+                
+                String judul = lemariBuku.get(i).getJudulBuku();
+                String penulis = lemariBuku.get(i).getPenulis();
+                String jumlah = lemariBuku.get(i).getJumlahHalaman();
+                System.out.println("Nomor       :   "+nom++);
+                System.out.println("Judul Buku  :   "+judul);
+                System.out.println("Penulis     :   "+penulis);
+                System.out.println("Volume      :   "+jumlah);
+                System.out.println();
 
-
+            }
+            System.out.println("apakah diatas sudah benar [y/n] ");
+            String answer = input.nextLine();
+            if(answer.equalsIgnoreCase("y") ){
+                // memasukan data ke transaksi
+                daftarTransaksi.put(transaction.getKodeTransaksi(), transaction);
+                System.out.println("Transaksi peminjaman sudah disimpan");
+            }else{
+                System.out.println("Transaksi peminjaman dibatalkan");
+            }
+        }else{
+            System.out.println("Tidak ada buku yang dipinjam :( ");
+        }
     }
 }

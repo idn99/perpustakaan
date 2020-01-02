@@ -37,6 +37,7 @@ public class Peminjaman{
 
     public void tambahBukuKeTransaksi(String isbn, Buku buku){
         this.books.put(isbn, buku);
+        System.out.println("Buku "+books.get(isbn).getJudulBuku()+" berhasil ditambahkan di transaksi");
     }
 
     public Buku getBook(String isbn){
@@ -44,4 +45,4 @@ public class Peminjaman{
         
     }
 
-}
+} 

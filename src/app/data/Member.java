@@ -1,6 +1,7 @@
 package app.data;
 
 public class Member{
+    
     private String idMember;
     private String namaMember;
     private String alamatMember;
