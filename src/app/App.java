@@ -1,6 +1,8 @@
 package app;
 import app.data.Buku;
 import app.data.Member;
+import app.transaction.Peminjaman;
+import java.util.Scanner;
 
 import java.util.HashMap;
 
@@ -11,9 +13,9 @@ public class App{
 
         HashMap<String, Buku> lemariBuku = new HashMap<String, Buku>();
 
-        lemariBuku.put("idn-001",new Buku("Kaguya-sama wa Kokurasetai","idn-001","Aka Akasaka","Viz Media","16 Volume"));
-        lemariBuku.put("idn-002",new Buku("Shingeki no Kyojin","idn-002","Hajime Isayama","Kondansha","30 Volume"));
-        lemariBuku.put("idn-003",new Buku("Kimetsu no Yaiba","idn-003","Koyoharu Gotoge","Shueisha","17 Volume"));
+        lemariBuku.put("idn-001",new Buku("Kaguya-sama wa Kokurasetai","idn-001","Aka Akasaka","Viz Media","16 Volume",17));
+        lemariBuku.put("idn-002",new Buku("Shingeki no Kyojin","idn-002","Hajime Isayama","Kondansha","30 Volume",27));
+        lemariBuku.put("idn-003",new Buku("Kimetsu no Yaiba","idn-003","Koyoharu Gotoge","Shueisha","17 Volume",5));
 
         int no = 1;
         for (String key : lemariBuku.keySet()){
@@ -49,6 +51,23 @@ public class App{
             System.out.println("nomor Hp    :   "+nohp);
             System.out.println();
 
+        }
+
+        Scanner input = new Scanner(System.in);
+        System.out.println("Masukan ISBN buku yang akan dipinjam : ");
+        String isbn = input.nextLine();
+
+        Member member = daftarMember.get("id-001");
+        Peminjaman transaction = new Peminjaman(member);
+        transaction.setKodeTransaksi();
+        System.out.println(transaction.getKodeTransaksi());
+
+        if(lemariBuku.containsKey(isbn)){
+            System.out.println("Buku Ada");
+            Buku borrowBooks = lemariBuku.get(isbn);
+            borrowBooks.dipinjam();
+        }else{
+            System.out.println("Buku tidak ada");
         }
 
 

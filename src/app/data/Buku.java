@@ -7,16 +7,17 @@ public class Buku{
     private String penulis;
     private String penerbit;
     private String jumlahHalaman;
-
-    public Buku(String judul, String isbn, String penulis, String penerbit, String jumlah){
-
-        this.judulBuku = judul;
+    private int stok;
+    
+    public Buku(String judulBuku, String isbn, String penulis, String penerbit, String jumlahHalaman, int stok) {
+        this.judulBuku = judulBuku;
         this.isbn = isbn;
         this.penulis = penulis;
         this.penerbit = penerbit;
-        this.jumlahHalaman = jumlah;
-        
+        this.jumlahHalaman = jumlahHalaman;
+        this.stok = stok;
     }
+
 
     public String getJudulBuku() {
         return judulBuku;
@@ -58,5 +59,16 @@ public class Buku{
         this.jumlahHalaman = jumlahHalaman;
     }
 
+    public int getStok() {
+        return stok;
+    }
+
+    public void setStok(int stok) {
+        this.stok = stok;
+    }
+
+    public void dipinjam(){
+        this.stok--;
+    }
 
 }
